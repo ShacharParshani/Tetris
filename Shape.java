@@ -1,11 +1,11 @@
 import java.awt.Color;
 public class Shape
 {
-	Color color; //צבע הצורה
-	int [][] type=new int[4][4]; //מערך דו מדדי "שמצוירת עליו הצורה" 1-התא במערך חלק מהצורה,אחרת-0	
+	Color color; 
+	int [][] type=new int[4][4];
 
 
-	public Shape (char name) //להכניס צבע
+	public Shape (char name)
 	{
 		
 
