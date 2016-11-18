@@ -18,8 +18,9 @@ public class Grafica extends JPanel implements KeyListener {
 	JLabel l=new JLabel("טטריס");JButton[]arrB=new JButton[180];
 	int x=190;
 	int y=100;
-	boolean fLimit=true;
 	int xChange=0;
+	Shape s;
+	int[][] screen=new int[18][10]; ; //מטריצת הלוח
 
 
 
@@ -32,19 +33,24 @@ public class Grafica extends JPanel implements KeyListener {
 		f.add(this);
 		f.setSize(1000,900);
 		f.setVisible(true);
+		for (int i=0;i<18;i++)
+		{
+			for(int j=0;j<10;j++)
+			{
+				screen[i][j]=0;
+			}
+		}
 	}
 
 	public void paintComponent (Graphics g)
 	{
-		int iLong=0;
-		boolean ifExistent=false;
-		Shape s1=new Shape('L');
 
-		for (int i=0;i<4&&fLimit;i++)
+
+		for (int i=0;i<4;i++)
 		{
 			for(int j=0;j<4;j++)
 			{
-				if(s1.type[i][j]!=0)
+				if(s.type[i][j]!=0)
 				{
 					g.setColor(this.getBackground());
 					g.fillRect(j*30+x-xChange,i*30+y-10,30, 30);
@@ -58,25 +64,29 @@ public class Grafica extends JPanel implements KeyListener {
 		g.drawLine(400, 100, 400, 640);
 		g.drawLine(100, 640, 400, 640);
 
-		for (int i=0;i<4&&fLimit;i++)
+		for (int i=0;i<4;i++)
 		{
 			for(int j=0;j<4;j++)
 			{
-				if(s1.type[i][j]!=0)
+				if(s.type[i][j]!=0)
 				{
-					g.setColor(s1.color);
-					g.fillRect(j*30+x,i*30+y,30, 30);
-					ifExistent=true; //בודק האם הצורה קיימית בשורה כלשהי
+					g.setColor(s.color);
+					g.fillRect(j*30+x,i*30+y,30, 30); //אורך כל ריבוע בצורה 30 
+
 				}
 			}
-			if(ifExistent)
-				iLong++;
-			ifExistent=false;
 		}
-
-		if(y>=(640-iLong*30))
-			fLimit=false;
 		y=y+10; //הצורה יורדת 10 יחידות למטה
+
+		if(y>(640-s.height*30))
+		{
+			this.addToScreen();
+			s.randomShape(this);
+			x=190;
+			y=100;
+			xChange=0;
+		}
+			
 
 
 	}
@@ -86,7 +96,7 @@ public class Grafica extends JPanel implements KeyListener {
 
 		if(e.getKeyCode()==KeyEvent.VK_RIGHT)
 		{
-			if(x<=400)
+			if(x<400-s.width*30)
 			{
 				x=x+30;
 				xChange=30;
@@ -95,9 +105,11 @@ public class Grafica extends JPanel implements KeyListener {
 
 		if(e.getKeyCode()==KeyEvent.VK_LEFT)
 		{
-			if(x>=100)
-			x=x-30;
-			xChange=-30;
+			if(x>100)
+			{
+				x=x-30;
+				xChange=-30;
+			}
 		}
 		repaint();
 
@@ -115,6 +127,19 @@ public class Grafica extends JPanel implements KeyListener {
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+	public void addToScreen()
+	{
+		for (int i=0;i<4;i++)
+		{
+			for(int j=0;j<4;j++)
+			{
+				if(s.type[i][j]!=0)
+				{
+					screen[j*30+x][i*30+y]=s.type[i][j];
+				}
+			}
+		}
 	}
 
 
