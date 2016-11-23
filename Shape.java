@@ -101,14 +101,34 @@ public class Shape
 								}
 								
 	}
-	public static void randomShape(Grafica g)
+	public static void randomShape(Grafica p)
 	{
 		final String alphabet = "STZILJO";
 		final int N = alphabet.length();
 		Random r = new Random();
 		char c=alphabet.charAt(r.nextInt(N));
-		g.s=new Shape(c);
+		p.s=new Shape(c);
 
+	}
+	public static Color numTOColor(int num,Grafica p)
+	{
+		if (num==1)
+			return Color.pink;
+		if (num==2)
+			return Color.blue;
+		if (num==3)
+			return Color.orange;
+		if (num==4)
+			return Color.yellow;
+		if (num==5)
+			return Color.green;
+		if (num==6)
+			return Color.magenta;
+		if (num==7)
+			return Color.red;
+		else
+			return p.getBackground();	
+	
 	}
 
 }

@@ -33,7 +33,7 @@ public class Grafica extends JPanel implements KeyListener {
 		f.add(this);
 		f.setSize(1000,900);
 		f.setVisible(true);
-		for (int i=0;i<18;i++)
+		for (int i=0;i<18;i++) //איפוס מטריצת מסך
 		{
 			for(int j=0;j<10;j++)
 			{
@@ -44,7 +44,15 @@ public class Grafica extends JPanel implements KeyListener {
 
 	public void paintComponent (Graphics g)
 	{
+		for (int i=0;i<18;i++) //ציור מטריצת מסך
+		{
+			for(int j=0;j<10;j++)
+			{
+				g.setColor(s.numTOColor(screen[i][j],this));
+				g.fillRect(j*30+100,i*30+100,30, 30); //אורך כל ריבוע בצורה 30 
 
+			}
+		}
 
 		for (int i=0;i<4;i++)
 		{
@@ -78,7 +86,7 @@ public class Grafica extends JPanel implements KeyListener {
 		}
 		y=y+10; //הצורה יורדת 10 יחידות למטה
 
-		if(y>(640-s.height*30))
+		if(this.ifStoop())
 		{
 			this.addToScreen();
 			s.randomShape(this);
@@ -86,7 +94,7 @@ public class Grafica extends JPanel implements KeyListener {
 			y=100;
 			xChange=0;
 		}
-			
+
 
 
 	}
@@ -136,12 +144,36 @@ public class Grafica extends JPanel implements KeyListener {
 			{
 				if(s.type[i][j]!=0)
 				{
-					screen[j*30+x][i*30+y]=s.type[i][j];
+					screen[(i*30+y-100)/30][(j*30+x-100)/30]=s.type[i][j];
 				}
 			}
 		}
 	}
 
+	public boolean ifStoop() //בודק האם צורה צריכה לעצור כי הגיעה לקצה או כי נתקלה בצורה אחרת
+	{
+		System.out.println(s.height);
+		if(y>=(640-s.height*30))//הצורה הגיעה לקצה המסך
+			return true;
+		for(int j=0;j<s.width;j++)
+			for(int i=s.height-1;i>=0;i--)
+			{
+				if(s.type[i][j]!=0)
+				{
+					System.out.println(y+" "+x+" "+i+" "+j);
+					if(screen[(y-100)/30+i+1][(x-100)/30+j]!=0)
+						return true;
+				}
+			}
+		return false;
+	}
+
+	/*public void lineIsFull ()
+	{
+		f=true;
+		for(int i=0;i<18;i++)
+
+	}*/
 
 
 
