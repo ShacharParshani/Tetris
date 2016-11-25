@@ -21,7 +21,7 @@ public class Grafica extends JPanel implements KeyListener {
 	int xChange=0;
 	Shape s;
 	int[][] screen=new int[18][10]; ; //מטריצת הלוח
-
+	final int shapeSize=30;
 
 
 
@@ -49,7 +49,7 @@ public class Grafica extends JPanel implements KeyListener {
 			for(int j=0;j<10;j++)
 			{
 				g.setColor(s.numTOColor(screen[i][j],this));
-				g.fillRect(j*30+100,i*30+100,30, 30); //אורך כל ריבוע בצורה 30 
+				g.fillRect(j*shapeSize+100,i*shapeSize+100,shapeSize,shapeSize); //אורך כל ריבוע בצורה 30 
 
 			}
 		}
@@ -61,7 +61,7 @@ public class Grafica extends JPanel implements KeyListener {
 				if(s.type[i][j]!=0)
 				{
 					g.setColor(this.getBackground());
-					g.fillRect(j*30+x-xChange,i*30+y-10,30, 30);
+					g.fillRect(j*shapeSize+x-xChange,i*shapeSize+y-10,shapeSize, shapeSize);
 				}
 			}
 		}
@@ -79,7 +79,7 @@ public class Grafica extends JPanel implements KeyListener {
 				if(s.type[i][j]!=0)
 				{
 					g.setColor(s.color);
-					g.fillRect(j*30+x,i*30+y,30, 30); //אורך כל ריבוע בצורה 30 
+					g.fillRect(j*shapeSize+x,i*shapeSize+y,shapeSize, shapeSize); //אורך כל ריבוע בצורה 30 
 
 				}
 			}
@@ -89,6 +89,7 @@ public class Grafica extends JPanel implements KeyListener {
 		if(this.ifStoop())
 		{
 			this.addToScreen();
+			this.lineIsFull();
 			s.randomShape(this);
 			x=190;
 			y=100;
@@ -104,10 +105,10 @@ public class Grafica extends JPanel implements KeyListener {
 
 		if(e.getKeyCode()==KeyEvent.VK_RIGHT)
 		{
-			if(x<400-s.width*30)
+			if(x<400-s.width*shapeSize)
 			{
-				x=x+30;
-				xChange=30;
+				x=x+shapeSize;
+				xChange=shapeSize;
 			}
 		}
 
@@ -115,10 +116,16 @@ public class Grafica extends JPanel implements KeyListener {
 		{
 			if(x>100)
 			{
-				x=x-30;
-				xChange=-30;
+				x=x-shapeSize;
+				xChange=-shapeSize;
 			}
 		}
+		
+		if(e.getKeyCode()==KeyEvent.VK_UP)
+		{
+			s.turnShape(s);
+		}
+		
 		repaint();
 
 
@@ -144,7 +151,7 @@ public class Grafica extends JPanel implements KeyListener {
 			{
 				if(s.type[i][j]!=0)
 				{
-					screen[(i*30+y-100)/30][(j*30+x-100)/30]=s.type[i][j];
+					screen[(i*shapeSize+y-100)/shapeSize][(j*shapeSize+x-100)/shapeSize]=s.type[i][j];
 				}
 			}
 		}
@@ -152,30 +159,51 @@ public class Grafica extends JPanel implements KeyListener {
 
 	public boolean ifStoop() //בודק האם צורה צריכה לעצור כי הגיעה לקצה או כי נתקלה בצורה אחרת
 	{
-		System.out.println(s.height);
-		if(y>=(640-s.height*30))//הצורה הגיעה לקצה המסך
+		if(y>=(640-s.height*shapeSize))//הצורה הגיעה לקצה המסך
 			return true;
 		for(int j=0;j<s.width;j++)
 			for(int i=s.height-1;i>=0;i--)
 			{
 				if(s.type[i][j]!=0)
 				{
-					System.out.println(y+" "+x+" "+i+" "+j);
-					if(screen[(y-100)/30+i+1][(x-100)/30+j]!=0)
+					if(screen[(y-100)/shapeSize+i+1][(x-100)/shapeSize+j]!=0)
 						return true;
 				}
 			}
 		return false;
 	}
 
-	/*public void lineIsFull ()
+	public void lineIsFull ()
 	{
-		f=true;
-		for(int i=0;i<18;i++)
+		boolean f=true;
+		int countEx; //מונה כמה מקומות בשורה במטריצה לא ריקים
+		int lastLine=0;
 
-	}*/
+		for(int i=17;i<0&&f;i--)
+		{
+			countEx=0;
+			for(int j=0;j<10;j++)
+				if(screen[i][j]!=0)
+					countEx++;
+			if(countEx==0)//שורה ריקה כלומר לא יכולות להיות מעליה שורות
+			{
+				f=false;
+				lastLine=i;
+			}
+		}
 
-
+		for(int i=17;i>=lastLine;i--)
+		{
+			countEx=0;
+			for(int j=0;j<10;j++)
+				if(screen[i][j]!=0)
+					countEx++;
+			if(countEx==10)//שורה מלאה
+				for(int k=i-1;k>=lastLine;k--)
+					for(int l=0;l<10;l++)
+						screen[k+1][l]= screen[k][l];
+		}
+	}
 
 
 

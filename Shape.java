@@ -1,17 +1,19 @@
 import java.awt.Color;
 import java.util.Random;
+
+import com.sun.glass.ui.CommonDialogs.Type;
 public class Shape
 {
 	Color color; //צבע הצורה
 	int [][] type=new int[4][4]; //מערך 4 על 4 שמבטא איפה נמצאת הצורה על המערך:0 לא נמצאת,מספרים מ1 ל7 נמצאת
 	int width; //רוחב הצורה- במספר ריבועים (על פי הריבוע הכי ימני)
 	int height; //גובה הצורה- במספר ריבועים (על פי הריבוע הכי תחתון)
-	
+
 
 
 	public Shape (char name)
 	{
-		
+
 		for (int i=0;i<4;i++)
 		{
 			for(int j=0;j<4;j++)
@@ -19,7 +21,7 @@ public class Shape
 				this.type[i][j]=0;
 			}
 		}
-	
+
 
 		if(name=='I')
 		{
@@ -99,7 +101,7 @@ public class Shape
 									this.type[1][1]=7;
 									this.type[1][2]=7;
 								}
-								
+
 	}
 	public static void randomShape(Grafica p)
 	{
@@ -128,7 +130,48 @@ public class Shape
 			return Color.red;
 		else
 			return p.getBackground();	
-	
+	}
+	public static void turnShape(Shape s)
+	{
+		int countEx; //מונה כמה מקומות בשורה במטריצה לא ריקים
+		int [] arrTurn= {12,8,4,0,13,9,5,1,14,10,6,2,15,11,7,3};
+		int [][] newtype=new int[4][4];
+		boolean f=true; //בודק אם השורה הראשונה ריקה, אם לא הלולאה שמעלה למעלה את הצורה תעצור
+		
+		for(int i=0;i<arrTurn.length;i++)
+		{
+			newtype[i/4][i%4]=s.type[arrTurn[i]/4][arrTurn[i]%4];
+		}
+		
+		s.type=newtype;
+		int newHeight=s.width;
+		int newWidth=s.height;
+		s.width=newWidth;
+		s.height=newHeight;
+		
+		for(int i=0;i<4;i++)
+			for(int j=0;j<4;j++)
+				System.out.print(s.type[i][j]);
+		System.out.println(" ");
+		
+		for(int i=0;i<4&&f;i++)//מעלה את הצורה ללמעלה של המערך type  
+		{
+			countEx=0;
+			for(int j=0;j<4;j++)
+				if(s.type[i][j]!=0)
+					countEx++;
+			if(countEx==0)//שורה ריקה-צריך להעלות את הצורה למעלה
+			{
+				for(int k=0;k<3;k++)
+					for(int l=0;l<4;l++)
+						s.type[k][l]=s.type[k+1][l];
+				for(int z=0;z<4;z++)
+					s.type[3][z]=0;
+			}
+			else
+				f=false;
+		} 
+
 	}
 
 }
