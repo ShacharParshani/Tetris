@@ -172,6 +172,23 @@ public class Grafica extends JPanel implements KeyListener {
 			}
 		return false;
 	}
+	
+	public boolean ifRight() //בודק האם צורה יכולה לזוז ימינה (ולא תתקע בקצה המסך או בצורה אחרת)
+	{
+		if(x>=(400-s.width*shapeSize))//הצורה הגיעה לקצה המסך
+			return false;
+		for(int i=0;i<s.height;i++)
+			for(int j=s.width-1;j>=0;j--)
+			{
+				if(s.type[i][j]!=0)
+				{
+					if(screen[(x-100)/shapeSize+i+1][(x-100)/shapeSize+j]!=0)
+						return true;
+				}
+			}
+		return false;
+	}
+
 
 	public void lineIsFull ()
 	{

@@ -158,7 +158,7 @@ public class Shape
 		{
 			countEx=0;
 			for(int j=0;j<4;j++)
-				if(s.type[i][j]!=0)
+				if(s.type[0][j]!=0)
 					countEx++;
 			if(countEx==0)//שורה ריקה-צריך להעלות את הצורה למעלה
 			{
@@ -171,6 +171,29 @@ public class Shape
 			else
 				f=false;
 		} 
+		f=true;
+		for(int j=0;j<4&&f;j++)//מזיז את הצורה לצד השמאלי של type  
+		{
+			countEx=0;
+			for(int i=0;i<4;i++)
+				if(s.type[i][0]!=0)
+					countEx++;
+			if(countEx==0)//שורה ריקה-צריך להעלות את הצורה למעלה
+			{
+				for(int k=0;k<4;k++)
+					for(int l=0;l<3;l++)
+						s.type[k][l]=s.type[k][l+1];
+				for(int z=0;z<4;z++)
+					s.type[z][3]=0;
+			}
+			else
+				f=false;
+		} 
+		for(int i=0;i<4;i++)
+			for(int j=0;j<4;j++)
+				System.out.print(s.type[i][j]);
+		System.out.println(" ");
+		
 
 	}
 
