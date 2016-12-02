@@ -54,7 +54,7 @@ public class Grafica extends JPanel implements KeyListener {
 			}
 		}
 
-		for (int i=0;i<4;i++)
+		for (int i=0;i<4;i++)//מחיקת צורה במיקום קודם
 		{
 			for(int j=0;j<4;j++)
 			{
@@ -72,7 +72,7 @@ public class Grafica extends JPanel implements KeyListener {
 		g.drawLine(400, 100, 400, 640);
 		g.drawLine(100, 640, 400, 640);
 
-		for (int i=0;i<4;i++)
+		for (int i=0;i<4;i++)//ציור צורה במיקום חדש
 		{
 			for(int j=0;j<4;j++)
 			{
@@ -105,7 +105,7 @@ public class Grafica extends JPanel implements KeyListener {
 
 		if(e.getKeyCode()==KeyEvent.VK_RIGHT)
 		{
-			if(x<400-s.width*shapeSize)
+			if(this.ifRight())
 			{
 				x=x+shapeSize;
 				xChange=shapeSize;
@@ -166,7 +166,7 @@ public class Grafica extends JPanel implements KeyListener {
 			{
 				if(s.type[i][j]!=0)
 				{
-					if(screen[(y-100)/shapeSize+i+1][(x-100)/shapeSize+j]!=0)
+					if(screen[(y-100)/shapeSize+i+1][(x-100)/shapeSize+j]!=0)//הצורה נתקלה בצורה אחרת
 						return true;
 				}
 			}
@@ -182,11 +182,11 @@ public class Grafica extends JPanel implements KeyListener {
 			{
 				if(s.type[i][j]!=0)
 				{
-					if(screen[(x-100)/shapeSize+i+1][(x-100)/shapeSize+j]!=0)
-						return true;
+					if(screen[(y-100)/shapeSize+i][(x-100)/shapeSize+j+1]!=0)//הצורה נתקלה בצורה אחרת
+						return false;
 				}
 			}
-		return false;
+		return true;
 	}
 
 

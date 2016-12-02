@@ -131,16 +131,20 @@ public class Shape
 		else
 			return p.getBackground();	
 	}
-	public static void turnShape(Shape s)
+	public static void turnShape(Shape s,Grafica p)
 	{
 		int countEx; //מונה כמה מקומות בשורה במטריצה לא ריקים
 		int [] arrTurn= {12,8,4,0,13,9,5,1,14,10,6,2,15,11,7,3};
 		int [][] newtype=new int[4][4];
 		boolean f=true; //בודק אם השורה הראשונה ריקה, אם לא הלולאה שמעלה למעלה את הצורה תעצור
 		
-		for(int i=0;i<arrTurn.length;i++)
+		for(int i=0;i<arrTurn.length;i++)//סיבוב הצורה
 		{
 			newtype[i/4][i%4]=s.type[arrTurn[i]/4][arrTurn[i]%4];
+		}
+		if(!p.ifRight())//אם הצורה נתקעת בצורה אחרת מימין או בקצה   
+		{
+			
 		}
 		
 		s.type=newtype;
