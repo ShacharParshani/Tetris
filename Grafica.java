@@ -114,7 +114,7 @@ public class Grafica extends JPanel implements KeyListener {
 
 		if(e.getKeyCode()==KeyEvent.VK_LEFT)
 		{
-			if(x>100)
+			if(this.ifLeft())
 			{
 				x=x-shapeSize;
 				xChange=-shapeSize;
@@ -123,7 +123,7 @@ public class Grafica extends JPanel implements KeyListener {
 		
 		if(e.getKeyCode()==KeyEvent.VK_UP)
 		{
-			s.turnShape(s);
+			s.turnShape(s,this);
 		}
 		
 		repaint();
@@ -188,6 +188,21 @@ public class Grafica extends JPanel implements KeyListener {
 			}
 		return true;
 	}
+	public boolean ifLeft() //בודק האם צורה יכולה לזוז שמאלה (ולא תתקע בקצה המסך או בצורה אחרת)
+	{
+		if(x<=100)//הצורה הגיעה לקצה המסך
+			return false;
+		for(int i=0;i<s.height;i++)
+			for(int j=0;j<s.width;j++)
+			{
+				if(s.type[i][j]!=0)
+				{
+					if(screen[(y-100)/shapeSize+i][(x-100)/shapeSize+j-1]!=0)//הצורה נתקלה בצורה אחרת
+						return false;
+				}
+			}
+		return true;
+	}
 
 
 	public void lineIsFull ()
@@ -220,6 +235,8 @@ public class Grafica extends JPanel implements KeyListener {
 					for(int l=0;l<10;l++)
 						screen[k+1][l]= screen[k][l];
 		}
+		
+	
 	}
 
 

@@ -142,9 +142,9 @@ public class Shape
 		{
 			newtype[i/4][i%4]=s.type[arrTurn[i]/4][arrTurn[i]%4];
 		}
-		if(!p.ifRight())//אם הצורה נתקעת בצורה אחרת מימין או בקצה   
+		if(!p.ifRight()&&s.height>s.width)//אם הצורה נתקעת בצורה אחרת מימין או בקצה ותעלה עליהם אם נסובב אותה נזיז אותה שמאלה   
 		{
-			
+			p.x=p.x-((s.height-s.width)*30);	
 		}
 		
 		s.type=newtype;
@@ -152,11 +152,6 @@ public class Shape
 		int newWidth=s.height;
 		s.width=newWidth;
 		s.height=newHeight;
-		
-		for(int i=0;i<4;i++)
-			for(int j=0;j<4;j++)
-				System.out.print(s.type[i][j]);
-		System.out.println(" ");
 		
 		for(int i=0;i<4&&f;i++)//מעלה את הצורה ללמעלה של המערך type  
 		{
@@ -193,10 +188,6 @@ public class Shape
 			else
 				f=false;
 		} 
-		for(int i=0;i<4;i++)
-			for(int j=0;j<4;j++)
-				System.out.print(s.type[i][j]);
-		System.out.println(" ");
 		
 
 	}
