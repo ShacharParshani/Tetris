@@ -109,8 +109,9 @@ public class Shape
 		final int N = alphabet.length();
 		Random r = new Random();
 		char c=alphabet.charAt(r.nextInt(N));
-		p.s=new Shape(c);
-
+		p.setS(new Shape(c));
+		
+		
 	}
 	public static Color numTOColor(int num,Grafica p)
 	{
@@ -144,8 +145,8 @@ public class Shape
 		}
 		if(!p.ifRight()&&s.height>s.width)//אם הצורה נתקעת בצורה אחרת מימין או בקצה ותעלה עליהם אם נסובב אותה נזיז אותה שמאלה   
 		{
-			p.x=p.x-((s.height-s.width)*30);	
-		}
+			p.setx(p.getx()-((s.height-s.width)*30));	
+					}
 		
 		s.type=newtype;
 		int newHeight=s.width;

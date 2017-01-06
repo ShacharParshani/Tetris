@@ -7,9 +7,10 @@ public class TetrisMain
 	public static void main(String[] args)
 	{
 		Grafica g= new Grafica();
-		g.s.randomShape(g);
-		MyThread t=new MyThread(g);
-		t.start();
+		g.getS().randomShape(g);
+		MyThread thread=new MyThread(g);
+		thread.start();
+		
 			
 	}
 	

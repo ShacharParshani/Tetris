@@ -14,26 +14,35 @@ import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 
 
 public class Grafica extends JPanel implements KeyListener {
-	JFrame f=new JFrame();
-	JLabel l=new JLabel("טטריס");JButton[]arrB=new JButton[180];
-	int x=190;
-	int y=100;
-	int xChange=0;
-	Shape s;
-	int[][] screen=new int[18][10]; ; //מטריצת הלוח
-	final int shapeSize=30;
+	private JFrame f=new JFrame();
+	private JLabel l=new JLabel();
+	private int x=190;
+	private int y=100;
+	private int xChange=0;
+	private Shape s;
+	private int[][] screen=new int[18][10]; ; //מטריצת הלוח
+	private final int shapeSize=30;
+	private int score=0;
+	private JLabel lScore=new JLabel();
+	
+
 
 
 
 	public Grafica()
 	{
 		this.add(l);
+		this.add(lScore);
 		addKeyListener(this);
 		this.setFocusable(true);
 		f.add(this);
 		f.setSize(1000,900);
 		f.setVisible(true);
-		for (int i=0;i<18;i++) //איפוס מטריצת מסך
+		restartScrean();
+	}
+
+	public void restartScrean() { //איפוס מטריצת מסך
+		for (int i=0;i<18;i++) 
 		{
 			for(int j=0;j<10;j++)
 			{
@@ -85,7 +94,7 @@ public class Grafica extends JPanel implements KeyListener {
 			}
 		}
 		y=y+10; //הצורה יורדת 10 יחידות למטה
-
+		
 		if(this.ifStoop())
 		{
 			this.addToScreen();
@@ -120,12 +129,12 @@ public class Grafica extends JPanel implements KeyListener {
 				xChange=-shapeSize;
 			}
 		}
-		
+
 		if(e.getKeyCode()==KeyEvent.VK_UP)
 		{
 			s.turnShape(s,this);
 		}
-		
+
 		repaint();
 
 
@@ -172,7 +181,7 @@ public class Grafica extends JPanel implements KeyListener {
 			}
 		return false;
 	}
-	
+
 	public boolean ifRight() //בודק האם צורה יכולה לזוז ימינה (ולא תתקע בקצה המסך או בצורה אחרת)
 	{
 		if(x>=(400-s.width*shapeSize))//הצורה הגיעה לקצה המסך
@@ -211,18 +220,21 @@ public class Grafica extends JPanel implements KeyListener {
 		int countEx; //מונה כמה מקומות בשורה במטריצה לא ריקים
 		int lastLine=0;
 
-		for(int i=17;i<0&&f;i--)
+		for(int i=17;i>=0&&f;i--)
 		{
 			countEx=0;
 			for(int j=0;j<10;j++)
 				if(screen[i][j]!=0)
 					countEx++;
-			if(countEx==0)//שורה ריקה כלומר לא יכולות להיות מעליה שורות
+			if(countEx==0)//השורה ריקה כלומר לא יכולות להיות מעליה שורות לא ריקות 
 			{
 				f=false;
 				lastLine=i;
 			}
 		}
+
+		if(f==true) //כל השורות מלאות-השחקן נפסל
+			endGame();
 
 		for(int i=17;i>=lastLine;i--)
 		{
@@ -235,12 +247,75 @@ public class Grafica extends JPanel implements KeyListener {
 					for(int l=0;l<10;l++)
 						screen[k+1][l]= screen[k][l];
 		}
-		
+
+
+	}
+
+	public void endGame ()
+	{
+		restartScrean();
+	}
+	public void addToScore(int add)// מגדילה את הניקוד לפי המספר שקיבלה 
+	{
+		score=score+add;
+		lScore.setText(""+score);
+
+	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	public Shape getS() {
+		return s;
+	}
+
+	public int getx() {
+		return x;
+	}
+
+	public int gety() {
+		return y;
+	}
+
+	public int getxChange() {
+		return xChange;
+	}
+
+	public void setx(int x) {
+		this.x = x;
+	}
+
+	public void sety(int y) {
+		this.y = y;
+	}
+
+	public void setxChange(int xChange) {
+		this.xChange = xChange;
+	}
+
+	public void setS(Shape s) {
+		this.s = s;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 
 
 
 
+
+
+
 }
+
