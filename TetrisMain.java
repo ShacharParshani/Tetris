@@ -9,10 +9,11 @@ public class TetrisMain
 		Grafica g= new Grafica();
 		g.getS().randomShape(g);
 		MyThread thread=new MyThread(g);
-		thread.start();
-		
-			
+		thread.start();		
+		g.setTh(thread);
 	}
+	
+	
 	
 
 }

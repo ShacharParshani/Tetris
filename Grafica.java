@@ -15,7 +15,8 @@ import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 
 public class Grafica extends JPanel implements KeyListener {
 	private JFrame f=new JFrame();
-	private JLabel l=new JLabel();
+	private JPanel p=new JPanel();
+	private JPanel p2=new JPanel();
 	private int x=190;
 	private int y=100;
 	private int xChange=0;
@@ -23,22 +24,30 @@ public class Grafica extends JPanel implements KeyListener {
 	private int[][] screen=new int[18][10]; ; //מטריצת הלוח
 	private final int shapeSize=30;
 	private int score=0;
+	private String stScore;
 	private JLabel lScore=new JLabel();
+	private MyThread th;
+
 	
+	
+
 
 
 
 
 	public Grafica()
 	{
-		this.add(l);
-		this.add(lScore);
+		p.add(lScore);
+		//p2.add(p);
+		p2.add(this);
 		addKeyListener(this);
 		this.setFocusable(true);
 		f.add(this);
 		f.setSize(1000,900);
 		f.setVisible(true);
 		restartScrean();
+	
+
 	}
 
 	public void restartScrean() { //איפוס מטריצת מסך
@@ -93,8 +102,8 @@ public class Grafica extends JPanel implements KeyListener {
 				}
 			}
 		}
-		y=y+10; //הצורה יורדת 10 יחידות למטה
-		
+
+
 		if(this.ifStoop())
 		{
 			this.addToScreen();
@@ -134,6 +143,13 @@ public class Grafica extends JPanel implements KeyListener {
 		{
 			s.turnShape(s,this);
 		}
+		
+		if(e.getKeyCode()==KeyEvent.VK_DOWN)
+		{
+			th.setTime(50);
+			th.setTime(100);
+			
+		}
 
 		repaint();
 
@@ -169,14 +185,20 @@ public class Grafica extends JPanel implements KeyListener {
 	public boolean ifStoop() //בודק האם צורה צריכה לעצור כי הגיעה לקצה או כי נתקלה בצורה אחרת
 	{
 		if(y>=(640-s.height*shapeSize))//הצורה הגיעה לקצה המסך
+		{
+			this.addToScore(1);
 			return true;
+		}
 		for(int j=0;j<s.width;j++)
 			for(int i=s.height-1;i>=0;i--)
 			{
 				if(s.type[i][j]!=0)
 				{
 					if(screen[(y-100)/shapeSize+i+1][(x-100)/shapeSize+j]!=0)//הצורה נתקלה בצורה אחרת
+					{
+						this.addToScore(1);
 						return true;
+					}
 				}
 			}
 		return false;
@@ -255,21 +277,23 @@ public class Grafica extends JPanel implements KeyListener {
 	{
 		restartScrean();
 	}
+
 	public void addToScore(int add)// מגדילה את הניקוד לפי המספר שקיבלה 
 	{
 		score=score+add;
-		lScore.setText(""+score);
-
+		stScore=Integer.toString(score);
+		lScore.setText(stScore);
+	
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
 	public Shape getS() {
 		return s;
 	}
@@ -309,6 +333,15 @@ public class Grafica extends JPanel implements KeyListener {
 	public void setScore(int score) {
 		this.score = score;
 	}
+
+	public MyThread getTh() {
+		return th;
+	}
+
+	public void setTh(MyThread th) {
+		this.th = th;
+	}
+	
 
 
 

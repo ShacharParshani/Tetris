@@ -3,12 +3,13 @@ public class MyThread extends Thread{
 	//constructor
 	private Grafica g;
 	private boolean f=true;
-	private int time=1000;
+	private int time=100;
 
 
 	public MyThread(Grafica g) {
 		super();
 		this.g = g;
+		
 	}
 
 
@@ -21,12 +22,13 @@ public class MyThread extends Thread{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			g.addToScore(1); 
+			g.sety(g.gety()+10); //הצורה יורדת 10 יחידות למטה
 			g.repaint();
-			System.out.println(g.getScore());
+			
 		}
 
 	}
+	
 
 
 
@@ -49,16 +51,19 @@ public class MyThread extends Thread{
 	}
 
 
-
 	public int getTime() {
 		return time;
 	}
 
 
-
 	public void setTime(int time) {
 		this.time = time;
 	}
+	
+
+
+
+
 
 
 
