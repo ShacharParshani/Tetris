@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,11 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 
+import com.sun.glass.ui.Timer;
+
 
 public class Grafica extends JPanel implements KeyListener {
 	private JFrame f=new JFrame();
 	private JPanel p=new JPanel();
-	private JPanel p2=new JPanel();
 	private int x=190;
 	private int y=100;
 	private int xChange=0;
@@ -25,11 +27,13 @@ public class Grafica extends JPanel implements KeyListener {
 	private final int shapeSize=30;
 	private int score=0;
 	private String stScore;
-	private JLabel lScore=new JLabel();
+	private JLabel lScore=new JLabel("hh");
 	private MyThread th;
+	private java.util.Timer timer;
+	private java.util.Timer timer2;
 
-	
-	
+
+
 
 
 
@@ -37,16 +41,21 @@ public class Grafica extends JPanel implements KeyListener {
 
 	public Grafica()
 	{
+		
 		p.add(lScore);
-		//p2.add(p);
-		p2.add(this);
+		p.setBackground(Color.LIGHT_GRAY);
 		addKeyListener(this);
 		this.setFocusable(true);
+		this.setSize(500,500);
+		this.setLayout(new BorderLayout());
+		this.add(p,BorderLayout.EAST);
 		f.add(this);
 		f.setSize(1000,900);
 		f.setVisible(true);
 		restartScrean();
-	
+		timer= new java.util.Timer();
+		timer2= new java.util.Timer();
+
 
 	}
 
@@ -143,12 +152,20 @@ public class Grafica extends JPanel implements KeyListener {
 		{
 			s.turnShape(s,this);
 		}
-		
+
 		if(e.getKeyCode()==KeyEvent.VK_DOWN)
 		{
-			th.setTime(50);
-			th.setTime(100);
-			
+			th.setTime(20);
+			TimerTask task1 = new TimerTask()
+			{ 
+				public void run() 
+				{
+					th.setTime(100);
+				}
+			};
+			timer.schedule(task1, 300);
+
+
 		}
 
 		repaint();
@@ -170,6 +187,7 @@ public class Grafica extends JPanel implements KeyListener {
 	}
 	public void addToScreen()
 	{
+		
 		for (int i=0;i<4;i++)
 		{
 			for(int j=0;j<4;j++)
@@ -265,9 +283,13 @@ public class Grafica extends JPanel implements KeyListener {
 				if(screen[i][j]!=0)
 					countEx++;
 			if(countEx==10)//שורה מלאה
+			{
 				for(int k=i-1;k>=lastLine;k--)
 					for(int l=0;l<10;l++)
 						screen[k+1][l]= screen[k][l];
+				i=i+1; //למקרה שיש שתי שורות רצוף מלאות
+			}
+
 		}
 
 
@@ -276,6 +298,16 @@ public class Grafica extends JPanel implements KeyListener {
 	public void endGame ()
 	{
 		restartScrean();
+		/*th.setTime(1000);
+		TimerTask task2 = new TimerTask()
+		{ 
+			public void run() 
+			{
+				th.setTime(100);
+			}
+		};
+		timer2.schedule(task2, 5000);*/
+
 	}
 
 	public void addToScore(int add)// מגדילה את הניקוד לפי המספר שקיבלה 
@@ -283,7 +315,7 @@ public class Grafica extends JPanel implements KeyListener {
 		score=score+add;
 		stScore=Integer.toString(score);
 		lScore.setText(stScore);
-	
+
 	}
 
 
@@ -341,7 +373,12 @@ public class Grafica extends JPanel implements KeyListener {
 	public void setTh(MyThread th) {
 		this.th = th;
 	}
+
+	public int getShapeSize() {
+		return shapeSize;
+	}
 	
+
 
 
 

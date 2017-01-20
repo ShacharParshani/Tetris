@@ -190,6 +190,11 @@ public class Shape
 				f=false;
 		} 
 		
+		if(p.gety()>(640-s.height*p.getShapeSize()))//הצורה יצאה מחוץ לגבולות המסך בגלל סיבוב הצורה
+		{
+			p.sety((640-s.height*p.getShapeSize()));
+		}
+		
 
 	}
 
